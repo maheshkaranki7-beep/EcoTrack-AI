@@ -1,0 +1,10 @@
+require('dotenv').config();
+const express=require('express'),cors=require('cors'),path=require('path'),fs=require('fs');
+const app=express();fs.mkdirSync(path.join(__dirname,'../uploads'),{recursive:true});
+app.use(cors({origin:process.env.FRONTEND_ORIGIN||true}));app.use(express.json({limit:'1mb'}));
+app.use('/uploads',express.static(path.join(__dirname,'../uploads')));
+app.use('/api/auth',require('./routes/auth'));app.use('/api/complaints',require('./routes/complaints'));
+app.use('/api/analytics',require('./routes/analytics'));app.use('/api/ai',require('./routes/ai'));
+app.get('/api/health',(q,s)=>s.json({status:'ok'}));
+app.use((e,q,s,n)=>{console.error(e);s.status(e.status||500).json({message:e.message||'Server error'});});
+app.listen(process.env.PORT||5000,()=>console.log('EcoTrack API running on port '+(process.env.PORT||5000)));
