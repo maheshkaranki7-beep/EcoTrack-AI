@@ -1,4 +1,4 @@
-const API='http://localhost:5000/api';let token=localStorage.getItem('eco_token')||'',me=null;
+const API='https://ecotrack-ai-1a1o.onrender.com/api';let token=localStorage.getItem('eco_token')||'',me=null;
 const $=id=>document.getElementById(id),say=m=>{const t=$('toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',3200)};
 async function api(p,o={}){const h={...(o.headers||{})};if(token)h.Authorization='Bearer '+token;if(o.body&&!(o.body instanceof FormData))h['Content-Type']='application/json';const r=await fetch(API+p,{...o,headers:h});const d=await r.json().catch(()=>({message:'Invalid response'}));if(!r.ok)throw Error(d.message||'Request failed');return d}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
